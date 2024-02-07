@@ -47,10 +47,17 @@ fn computer_picks_number() {
     let secret_number = rand::thread_rng().gen_range(1..=100);
 
     loop {
+        println!("Enter your guess:");
         let mut input = String::new();
         io::stdin().read_line(&mut input).expect("failed to read");
 
-        let guess: u32 = input.trim().parse().expect("Please type a number");
+        let guess: u32 = match input.trim().parse() {
+            Ok(num) => num,
+            Err(_) => {
+                println!("Not a number. Try again.");
+                continue;
+            }
+        };
         match guess.cmp(&secret_number) {
             Ordering::Less => println!("Too small!"),
             Ordering::Greater => println!("Too big!"),
